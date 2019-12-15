@@ -15,8 +15,8 @@
         <Grid.ColumnDefinitions>
 
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Row="0" Grid.RowSpan="1" Text="example.com" FontSize="20" TextAlignment="Center" Padding="5"></TextBox>
-        <DataGrid Grid.Row="1" Grid.RowSpan="1"></DataGrid>
-        <Button Content="Pobierz" Grid.Row="2" Grid.RowSpan="1"></Button>
+        <TextBox Name="UrlBox" Grid.Row="0" Grid.RowSpan="1" Text="example.com" FontSize="20" TextAlignment="Center" Padding="5"></TextBox>
+        <TextBox Name="OutputBox" Grid.Row="1" Grid.RowSpan="1" HorizontalScrollBarVisibility="Visible"></TextBox>
+        <Button Content="Pobierz" Grid.Row="2" Grid.RowSpan="1" Click="Pobierz"></Button>
     </Grid>
 </Window>

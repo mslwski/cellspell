@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using HtmlAgilityPack;
 namespace CellSpell
 {
     /// <summary>
@@ -23,6 +23,19 @@ namespace CellSpell
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Pobierz(object sender, RoutedEventArgs e)
+        {
+            var url = "https://pl.wikipedia.org/wiki/Sejm_Czteroletni";
+            var web = new HtmlWeb();
+            var doc = web.Load(url);
+            var pnodes = doc.DocumentNode.SelectNodes("//p/text()");
+            foreach(var node in pnodes)
+            {
+                OutputBox.AppendText(node.InnerHtml);
+                OutputBox.AppendText("\n***\n");
+            }
         }
     }
 }
