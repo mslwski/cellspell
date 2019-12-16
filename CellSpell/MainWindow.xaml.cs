@@ -31,13 +31,14 @@ namespace CellSpell
             var web = new HtmlWeb();
             var doc = web.Load(url);
             var pnodes = doc.DocumentNode.SelectNodes("//p/text()");
-            String txt = new String();
-            foreach(var node in pnodes)
+            //String txt = System.String.Empty;
+            foreach (var node in pnodes)
             {
-                txt += node.InnerHtml;
+                //txt += node.InnerHtml;
+                RawOutputBox.Items.Add(node.InnerHtml);
             }
 
-            RawOutputBox.Items.Add(txt);
+            //RawOutputBox.Items.Add(txt);
         }
     }
 }
