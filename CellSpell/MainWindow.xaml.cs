@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HtmlAgilityPack;
+using IronPython.Hosting;
+
 namespace CellSpell
 {
     /// <summary>
@@ -31,20 +33,21 @@ namespace CellSpell
             var web = new HtmlWeb();
             var doc = web.Load(url);
             var pnodes = doc.DocumentNode.SelectNodes("//p/text()");
-            //String txt = System.String.Empty;
             foreach (var node in pnodes)
             {
-                //txt += node.InnerHtml;
                 RawOutputBox.Items.Add(node.InnerHtml);
             }
-
-            //RawOutputBox.Items.Add(txt);
         }
 
         private void Wykonaj(object sender, RoutedEventArgs e)
         {
             var script = PythonScriptBox.Text;
-            ModifiedOutputBox.Items.Add(script);
+            var pyEngine = Python.CreateEngine();
+            var scope = pyEngine.CreateScope();
+            scope.SetVariable("input", RawOutputBox.Items);
+            pyEngine.Execute(script, scope);
+            ModifiedOutputBox.ItemsSource = scope.GetVariable("output");
+            //ModifiedOutputBox.Items.Add(scope.GetVariable("output"));
         }
     }
 }
