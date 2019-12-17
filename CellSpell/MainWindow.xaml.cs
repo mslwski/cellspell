@@ -40,5 +40,11 @@ namespace CellSpell
 
             //RawOutputBox.Items.Add(txt);
         }
+
+        private void Wykonaj(object sender, RoutedEventArgs e)
+        {
+            var script = PythonScriptBox.Text;
+            ModifiedOutputBox.Items.Add(script);
+        }
     }
 }

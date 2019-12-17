@@ -27,6 +27,8 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <ListBox Name="ModifiedOutputBox" Grid.Row="1" Grid.Column="2" Grid.RowSpan="1" ></ListBox>
+        <TextBox Name="PythonScriptBox" Grid.Row="1" Grid.Column="3" Grid.RowSpan="1" TextWrapping="Wrap" MaxLines="20" AcceptsReturn="True" AcceptsTab="True"></TextBox>
         <Button Content="Pobierz" Grid.Row="2" Grid.RowSpan="1" Click="Pobierz"></Button>
+        <Button Content="Wykonaj" Grid.Row="2" Grid.RowSpan="1" Grid.Column="3" Click="Wykonaj"></Button>
     </Grid>
 </Window>
