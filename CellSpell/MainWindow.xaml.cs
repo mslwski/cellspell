@@ -1,6 +1,8 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HtmlAgilityPack;
+using Microsoft.CSharp;
 
 namespace CellSpell
 {
@@ -40,7 +43,54 @@ namespace CellSpell
 
         private void Wykonaj(object sender, RoutedEventArgs e)
         {
+            string code = @"
+                using System;
+                using System.Collections.Generic;
+            
+                namespace UserFunctions
+                {                
+                    public class BinaryFunction
+                    {                
+                        public static double Function(List<String> input)
+                        {
+                            function_body
+                        }
+                    }
+                }
+            ";
+            code = code.Replace("function_body", PythonScriptBox.Text);
+            CSharpCodeProvider provider = new CSharpCodeProvider();
+            CompilerParameters parameters = new CompilerParameters();
 
+            CompilerResults results = provider.CompileAssemblyFromSource(parameters, code);
+
+            if (results.Errors.HasErrors)
+            {
+                StringBuilder sb = new StringBuilder();
+
+                foreach (CompilerError error in results.Errors)
+                {
+                    sb.AppendLine(String.Format("Error ({0}): {1}", error.ErrorNumber, error.ErrorText));
+                }
+
+                throw new InvalidOperationException(sb.ToString());
+            }
+
+            Assembly assembly = results.CompiledAssembly;
+            Type program = assembly.GetType("UserFunctions.BinaryFunction");
+            MethodInfo function = program.GetMethod("Function");
+
+            var betterFunction = (Func< List < String >, double>)Delegate.CreateDelegate(typeof(Func<List<String>, double>), function);
+
+            List<String> input = new List<string>();
+            foreach(var item in RawOutputBox.Items)
+            {
+                input.Add(item.ToString());
+            }
+            
+
+            double result = betterFunction(input);
+            Console.WriteLine(result);
         }
     }
 }
