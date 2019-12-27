@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HtmlAgilityPack;
-using IronPython.Hosting;
 
 namespace CellSpell
 {
@@ -41,13 +40,7 @@ namespace CellSpell
 
         private void Wykonaj(object sender, RoutedEventArgs e)
         {
-            var script = PythonScriptBox.Text;
-            var pyEngine = Python.CreateEngine();
-            var scope = pyEngine.CreateScope();
-            scope.SetVariable("input", RawOutputBox.Items);
-            pyEngine.Execute(script, scope);
-            ModifiedOutputBox.ItemsSource = scope.GetVariable("output");
-            //ModifiedOutputBox.Items.Add(scope.GetVariable("output"));
+
         }
     }
 }
