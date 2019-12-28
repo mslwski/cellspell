@@ -16,7 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HtmlAgilityPack;
 using Microsoft.CSharp;
-
+using CellSpell.Models;
 namespace CellSpell
 {
     /// <summary>
@@ -46,13 +46,16 @@ namespace CellSpell
             string code = @"
                 using System;
                 using System.Collections.Generic;
-            
+                using CellSpell.Models;
+
                 namespace UserFunctions
                 {                
+                   
                     public class BinaryFunction
                     {                
                         public static double Function(List<String> input)
                         {
+                            Result r = new Result();
                             function_body
                         }
                     }
@@ -61,6 +64,12 @@ namespace CellSpell
             code = code.Replace("function_body", PythonScriptBox.Text);
             CSharpCodeProvider provider = new CSharpCodeProvider();
             CompilerParameters parameters = new CompilerParameters();
+
+            var assemblies = AppDomain.CurrentDomain
+                            .GetAssemblies()
+                            .Where(a => !a.IsDynamic)
+                            .Select(a => a.Location);
+            parameters.ReferencedAssemblies.AddRange(assemblies.ToArray());
 
             CompilerResults results = provider.CompileAssemblyFromSource(parameters, code);
 
@@ -91,6 +100,8 @@ namespace CellSpell
 
             double result = betterFunction(input);
             Console.WriteLine(result);
+
+            Result r = new Result();
         }
     }
 }
